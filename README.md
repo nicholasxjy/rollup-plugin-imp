@@ -49,14 +49,13 @@ const config = {
 ### how it works
 
 ```js
-
-import { Button, Icon } from 'ui
+import { Button, Icon } from "ui";
 
 // it will transform below
-import Button from 'ui/lib/button'
-import 'ui/lib/button/style/index.css'
-import Icon from 'ui/lib/icon'
-import 'ui/lib/icon/style/index.css'
+import Button from "ui/lib/button";
+import "ui/lib/button/style/index.css";
+import Icon from "ui/lib/icon";
+import "ui/lib/icon/style/index.css";
 ```
 
 ### emm
