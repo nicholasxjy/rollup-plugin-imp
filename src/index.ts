@@ -1,9 +1,11 @@
 import pluginutils from "@rollup/pluginutils";
 import MagicString from "magic-string";
+import path from "path";
 import { find } from "lodash";
 import { parse } from "@babel/parser";
 import { Options } from "./types";
 
+const resolveExtensions = [".js", ".jsx", ".ts", ".tsx"];
 const babelParserPlugins = [
   "estree",
   "jsx",
@@ -39,8 +41,13 @@ function pluginImp(options: Options) {
   return {
     name: "rollup-plugin-imp",
     transform(code, id) {
+      console.log("id: ", id);
+
       const ms = new MagicString(code);
       if (!filter(id)) return null;
+      // should process [.ts .tsx .js .jsx]
+      const extname = path.extname(id);
+      if (!resolveExtensions.includes(extname)) return null;
       const ast = parse(code, {
         sourceType: "module",
         plugins: babelParserPlugins,
@@ -50,6 +57,7 @@ function pluginImp(options: Options) {
         ast.program.body.forEach((node) => {
           const nodeSourceName =
             node && node.source && node.source.value ? node.source.value : "";
+          console.log("nodeSourceName: ", nodeSourceName);
           const lib = find(
             options.libList,
             (v) => v.libName === nodeSourceName

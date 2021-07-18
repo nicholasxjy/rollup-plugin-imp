@@ -1,3 +1,4 @@
+import { FilterPattern } from "@rollup/pluginutils";
 export interface LibItem {
   libName: string;
   libDirectory: string;
@@ -6,6 +7,6 @@ export interface LibItem {
 
 export interface Options {
   libList: LibItem[];
-  include: any[];
-  exclude: any[];
+  include?: FilterPattern;
+  exclude: FilterPattern;
 }
