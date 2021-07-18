@@ -1,0 +1,22 @@
+{
+  "name": "rollup-plugin-imp",
+  "version": "1.0.0",
+  "description": "A rollup plugin like babel plugin import",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rollup",
+    "plugin",
+    "import"
+  ],
+  "author": "nicholas xue",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/parser": "^7.14.7",
+    "@rollup/pluginutils": "^4.1.1",
+    "lodash": "^4.17.21",
+    "magic-string": "^0.25.7"
+  }
+}
