@@ -1,9 +1,37 @@
-const pluginutils = require("@rollup/pluginutils");
-const MagicString = require("magic-string");
-const { find } = require("lodash");
-const { parse } = require("@babel/parser");
+import pluginutils from "@rollup/pluginutils";
+import MagicString from "magic-string";
+import { find } from "lodash";
+import { parse } from "@babel/parser";
+import { Options } from "./types";
 
-function pluginImp(options) {
+const babelParserPlugins = [
+  "estree",
+  "jsx",
+  "typescript",
+  "asyncGenerators",
+  "bigInt",
+  "classPrivateMethods",
+  "classPrivateProperties",
+  "classProperties",
+  "decorators-legacy",
+  "doExpressions",
+  "dynamicImport",
+  "exportDefaultFrom",
+  "exportExtensions",
+  "exportNamespaceFrom",
+  "functionBind",
+  "functionSent",
+  "importMeta",
+  "nullishCoalescingOperator",
+  "numericSeparator",
+  "objectRestSpread",
+  "optionalCatchBinding",
+  "optionalChaining",
+  ["pipelineOperator", { proposal: "minimal" }],
+  "throwExpressions",
+];
+
+function pluginImp(options: Options) {
   if (!options || !options.libList || !options.libList.length) {
     throw new Error("imp options libList should be an array");
   }
@@ -15,32 +43,7 @@ function pluginImp(options) {
       if (!filter(id)) return null;
       const ast = parse(code, {
         sourceType: "module",
-        plugins: [
-          "estree",
-          "jsx",
-          "typescript",
-          "asyncGenerators",
-          "bigInt",
-          "classPrivateMethods",
-          "classPrivateProperties",
-          "classProperties",
-          "decorators-legacy",
-          "doExpressions",
-          "dynamicImport",
-          "exportDefaultFrom",
-          "exportExtensions",
-          "exportNamespaceFrom",
-          "functionBind",
-          "functionSent",
-          "importMeta",
-          "nullishCoalescingOperator",
-          "numericSeparator",
-          "objectRestSpread",
-          "optionalCatchBinding",
-          "optionalChaining",
-          ["pipelineOperator", { proposal: "minimal" }],
-          "throwExpressions",
-        ],
+        plugins: babelParserPlugins,
       });
       if (!ast || !ast.program) return null;
       if (Array.isArray(ast.program.body)) {
@@ -92,5 +95,4 @@ function pluginImp(options) {
   };
 }
 
-pluginImp.default = pluginImp;
-module.exports = pluginImp;
+export default pluginImp;
