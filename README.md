@@ -29,6 +29,7 @@ const config = {
         {
           libName: "akagami-ui",
           libDirectory: "lib",
+          camel2DashComponentName: true,
           style(name) {
             return `akagami-ui/lib/${name}/style/index.css`;
           },
@@ -36,6 +37,7 @@ const config = {
         {
           libName: "akagami-commmon",
           libDirectory: "es",
+          camel2DashComponentName: true,
           style(name) {
             return `akagami-commmon/es/${name}/style/index.less`;
           },
