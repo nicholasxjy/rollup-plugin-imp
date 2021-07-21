@@ -2,6 +2,7 @@ import pluginutils from "@rollup/pluginutils";
 import MagicString from "magic-string";
 import path from "path";
 import { find } from "lodash";
+import { paramCase } from 'param-case'
 import { parse } from "@babel/parser";
 import { Options } from "./types";
 
@@ -33,7 +34,7 @@ const babelParserPlugins = [
   "throwExpressions",
 ];
 
-function pluginImp(options: Options) {
+function pluginImp(options: Options = {}) {
   if (!options || !options.libList || !options.libList.length) {
     throw new Error("imp options libList should be an array");
   }
@@ -53,6 +54,7 @@ function pluginImp(options: Options) {
       if (!ast || !ast.program) return null;
       if (Array.isArray(ast.program.body)) {
         ast.program.body.forEach((node) => {
+          // console.log('node: ', node)
           const nodeSourceName =
             node && node.source && node.source.value ? node.source.value : "";
           const lib = find(
@@ -73,14 +75,15 @@ function pluginImp(options: Options) {
                     : "";
                 if (!importedName) return null;
                 // localname for as (import a as aa from '')
+                const exportName = lib.camel2DashComponentName ? paramCase(importedName) : importedName
                 impList.push(
                   `import ${localName} from '${lib.libName}/${
                     lib.libDirectory
-                  }/${importedName.toLowerCase()}'`
+                  }/${exportName}'`
                 );
                 // push style
                 impList.push(
-                  `import '${lib.style(importedName.toLowerCase())}'`
+                  `import '${lib.style(exportName)}'`
                 );
               });
             }
