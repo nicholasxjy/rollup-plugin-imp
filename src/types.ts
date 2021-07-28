@@ -3,7 +3,7 @@ export interface LibItem {
   libName: string;
   libDirectory: string;
   camel2DashComponentName: boolean
-  style: (name: string) => string;
+  style: boolean | (name: string) => string;
 }
 
 export interface Options {

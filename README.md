@@ -29,7 +29,7 @@ const config = {
         {
           libName: "akagami-ui",
           libDirectory: "lib",
-          camel2DashComponentName: true,
+          camel2DashComponentName: true, // required => TableColumn - table-column
           style(name) {
             return `akagami-ui/lib/${name}/style/index.css`;
           },
@@ -37,10 +37,17 @@ const config = {
         {
           libName: "akagami-commmon",
           libDirectory: "es",
-          camel2DashComponentName: true,
+          camel2DashComponentName: true, // required => Modal - modal
           style(name) {
             return `akagami-commmon/es/${name}/style/index.less`;
           },
+        },
+        {
+          libName: "akagami-legacy",
+          libDirectory: "es",
+          camel2DashComponentName: true,
+          // no need to import style
+          // just dont set style
         },
       ],
     }),

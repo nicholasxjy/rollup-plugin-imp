@@ -1,8 +1,8 @@
 import pluginutils from "@rollup/pluginutils";
 import MagicString from "magic-string";
 import path from "path";
-import { find } from "lodash";
-import { paramCase } from 'param-case'
+import { find, isFunction } from "lodash";
+import { paramCase } from "param-case";
 import { parse } from "@babel/parser";
 import { Options } from "./types";
 
@@ -75,16 +75,19 @@ function pluginImp(options: Options = {}) {
                     : "";
                 if (!importedName) return null;
                 // localname for as (import a as aa from '')
-                const exportName = lib.camel2DashComponentName ? paramCase(importedName) : importedName
+                const exportName = lib.camel2DashComponentName
+                  ? paramCase(importedName)
+                  : importedName;
                 impList.push(
-                  `import ${localName} from '${lib.libName}/${
-                    lib.libDirectory
-                  }/${exportName}'`
+                  `import ${localName} from '${lib.libName}/${lib.libDirectory}/${exportName}'`
                 );
-                // push style
-                impList.push(
-                  `import '${lib.style(exportName)}'`
-                );
+                if (lib.style && isFunction(lib.style)) {
+                  const stylePath = lib.style(exportName);
+                  if (stylePath) {
+                    // push style
+                    impList.push(`import '${stylePath}'`);
+                  }
+                }
               });
             }
             if (impList.length) {
